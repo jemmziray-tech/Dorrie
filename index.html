@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Pro Mini Shop</title>
-
+<title>Ultimate Mini Shop</title>
 <style>
 body{font-family:Arial;background:#f2f2f2;margin:0;}
 header{background:#222;color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;}
@@ -24,11 +23,10 @@ button:hover{background:#0a8f3c;}
 @media(max-width:600px){.products{flex-direction:column;align-items:center;}}
 </style>
 </head>
-
 <body>
 
 <header>
-<h2>Ultimate Pro Shop</h2>
+<h2>Ultimate Mini Shop</h2>
 <div class="search-bar">
 <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
 </div>
@@ -53,15 +51,8 @@ button:hover{background:#0a8f3c;}
 </div>
 
 <script>
-// sample products if admin has none
-let products = JSON.parse(localStorage.getItem("products")) || [
-{name:"Nike Shoes", price:50, image:"https://via.placeholder.com/200", category:"Shoes"},
-{name:"Headphones", price:30, image:"https://via.placeholder.com/200", category:"Electronics"},
-{name:"Smart Watch", price:70, image:"https://via.placeholder.com/200", category:"Electronics"},
-{name:"Adidas Shirt", price:40, image:"https://via.placeholder.com/200", category:"Clothes"}
-]
-localStorage.setItem("products", JSON.stringify(products))
-
+// Load products from localStorage
+let products = JSON.parse(localStorage.getItem("products")) || []
 let cart=[]
 let phone="255743924467"
 
@@ -100,12 +91,9 @@ else { cart.push({name:product.name, price:product.price, quantity:1}) }
 
 updateCart()
 
-// Button animation
 btn.innerText="Added!"
 btn.style.transform="scale(1.2)"
 setTimeout(()=>{btn.innerText="Add to Cart"; btn.style.transform="scale(1)"},500)
-
-// Image pop animation
 let img = btn.parentElement.querySelector("img")
 img.style.transform="scale(1.05)"
 setTimeout(()=>{img.style.transform="scale(1)"},300)
@@ -154,7 +142,7 @@ let url="https://wa.me/"+phone+"?text="+encodeURIComponent(message)
 window.open(url,"_blank")
 }
 
-// Search + filter by category + price
+// Search + filter
 function filterProducts(){
 let query = document.getElementById("search").value.toLowerCase()
 let cat = document.getElementById("categoryFilter").value
