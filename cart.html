@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Shopping Cart</title>
+<style>
+body{font-family:Arial;background:#f2f2f2;margin:0;padding:20px;}
+.container{background:white;padding:20px;border-radius:10px;max-width:600px;margin:auto;box-shadow:0 5px 15px rgba(0,0,0,0.2);}
+h2{text-align:center;}
+ul{list-style:none;padding:0;}
+li{margin:10px 0;padding:10px;border-bottom:1px solid #ddd;}
+button{padding:5px 10px;border:none;border-radius:5px;cursor:pointer;}
+.remove{background:red;color:white;margin-left:10px;}
+.checkout{background:green;color:white;margin-top:20px;}
+.clear{background:orange;color:white;margin-top:10px;}
+.total{font-weight:bold;margin-top:15px;}
+.quantity{width:50px;text-align:center;margin-left:10px;}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Your Cart</h2>
+  <ul id="cartItems"></ul>
+  <div class="total">Total: $<span id="total">0</span></div>
+  <button class="checkout" onclick="checkout()">Checkout</button>
+  <button class="clear" onclick="clearCart()">Clear Cart</button>
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+let phone="255743924467" // WhatsApp number
+
+function displayCart(){
+  let list=""
+  let total=0
+  cart.forEach((item,index)=>{
+    total += Number(item.price) * item.quantity
+    list += `<li>${item.name} - $${item.price} x 
+      <input type="number" class="quantity" value="${item.quantity}" min="1" onchange="changeQuantity(${index},this.value)">
+      <button class="remove" onclick="removeItem(${index})">Remove</button></li>`
+  })
+  document.getElementById("cartItems").innerHTML=list
+  document.getElementById("total").innerText=total
+  localStorage.setItem("cart", JSON.stringify(cart))
+}
+
+function removeItem(index){
+  cart.splice(index,1)
+  displayCart()
+}
+
+function clearCart(){
+  cart=[]
+  displayCart()
+}
+
+function changeQuantity(index,value){
+  let qty=parseInt(value)
+  if(qty<1) qty=1
+  cart[index].quantity=qty
+  displayCart()
+}
+
+function checkout(){
+  if(cart.length===0) return alert("Cart is empty")
+  let message="Hello, I want to order:\n"
+  cart.forEach(item=>{
+    message += `- ${item.name} ($${item.price}) x ${item.quantity}\n`
+  })
+  let url="https://wa.me/"+phone+"?text="+encodeURIComponent(message)
+  window.open(url,"_blank")
+}
+
+displayCart()
+</script>
+
+</body>
+</html>
