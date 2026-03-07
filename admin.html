@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard Pro</title>
+<style>
+body{font-family:Arial;background:#f2f2f2;text-align:center;margin:0;}
+.container{background:white;width:450px;margin:30px auto;padding:20px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.2);}
+input, select{width:90%;padding:10px;margin:5px;border-radius:5px;border:1px solid #ccc;}
+button{padding:10px 15px;margin-top:10px;border:none;background:green;color:white;border-radius:5px;cursor:pointer;}
+button:hover{background:#0a8f3c;}
+ul{text-align:left;}
+.delete{background:red;margin-left:10px;}
+</style>
+</head>
+<body>
+
+<h2>Admin Dashboard Pro</h2>
+<div class="container">
+<input id="name" placeholder="Product name">
+<input id="price" placeholder="Price">
+<input id="image" placeholder="Image URL">
+<select id="category">
+<option value="Shoes">Shoes</option>
+<option value="Electronics">Electronics</option>
+<option value="Clothes">Clothes</option>
+<option value="Other">Other</option>
+</select>
+<button onclick="addProduct()">Add Product</button>
+
+<h3>Product List</h3>
+<ul id="list"></ul>
+</div>
+
+<script>
+let products = JSON.parse(localStorage.getItem("products")) || []
+
+function save(){localStorage.setItem("products", JSON.stringify(products))}
+
+function display(){
+let list=""
+products.forEach((p,i)=>{
+list+=`<li>${p.name} - $${p.price} - ${p.category} <button class="delete" onclick="deleteProduct(${i})">Delete</button></li>`
+})
+document.getElementById("list").innerHTML=list
+}
+
+function addProduct(){
+let name=document.getElementById("name").value
+let price=document.getElementById("price").value
+let image=document.getElementById("image").value
+let category=document.getElementById("category").value
+if(!name || !price || !image) return alert("Fill all fields")
+products.push({name,price,image,category})
+save()
+display()
+document.getElementById("name").value=""
+document.getElementById("price").value=""
+document.getElementById("image").value=""
+}
+
+function deleteProduct(index){
+products.splice(index,1)
+save()
+display()
+}
+
+display()
+</script>
+
+</body>
+</html>
