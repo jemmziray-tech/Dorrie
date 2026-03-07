@@ -15,7 +15,16 @@ ul{text-align:left;}
 </head>
 <body>
 
+<script>
+// Login protection
+if(localStorage.getItem("isAdmin")!=="true"){
+  alert("Access denied. Please login first.")
+  window.location="login.html"
+}
+</script>
+
 <h2>Admin Dashboard Pro</h2>
+<button onclick="logout()">Logout</button>
 <div class="container">
 <input id="name" placeholder="Product name">
 <input id="price" placeholder="Price">
@@ -63,6 +72,11 @@ function deleteProduct(index){
 products.splice(index,1)
 save()
 display()
+}
+
+function logout(){
+localStorage.removeItem("isAdmin")
+window.location="login.html"
 }
 
 display()
